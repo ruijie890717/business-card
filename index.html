@@ -13,7 +13,7 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-      background: #f5f5f5;
+      background: #f0f0f0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -21,264 +21,73 @@
       padding: 20px;
     }
 
-    /* 名片容器 - 9:16 比例适合朋友圈 */
-    .card-container {
+    /* 名片图片容器 */
+    .card-wrapper {
+      position: relative;
       width: 100%;
       max-width: 375px;
-      background: linear-gradient(180deg, #0d2b55 0%, #1565c0 30%, #fff 30%);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
 
-    /* 顶部公司区域 */
-    .header-section {
-      padding: 40px 24px 50px;
-      text-align: center;
-      color: #fff;
-    }
-
-    .company-logo {
-      width: 120px;
-      height: 35px;
-      background: #fff;
-      border-radius: 6px;
-      margin: 0 auto 12px;
-      padding: 0;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      overflow: hidden;
-    }
-
-    .company-logo img {
+    /* Canvas生成的名片图片 */
+    #cardCanvas {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 0;
+      height: auto;
       display: block;
     }
 
-    .company-name {
-      font-size: 26px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    /* 可点击区域层 */
+    .click-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
 
-    .company-slogan {
-      font-size: 14px;
-      opacity: 0.95;
-      font-weight: 500;
+    /* 可点击区域 */
+    .click-area {
+      position: absolute;
+      cursor: pointer;
+      transition: background 0.2s;
     }
 
-    /* 个人信息卡片 */
-    .profile-card {
-      background: #fff;
-      margin: -20px 16px 16px;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      position: relative;
+    .click-area:active {
+      background: rgba(255,255,255,0.2);
     }
 
-    .profile-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #f1f5f9;
+    /* 电话区域 */
+    .phone-area {
+      top: 52%;
+      left: 15%;
+      width: 70%;
+      height: 8%;
     }
 
-    .avatar {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #1565c0, #1e88e5);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 28px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .profile-info h2 {
-      font-size: 22px;
-      color: #0d2b55;
-      margin-bottom: 4px;
-    }
-
-    .profile-info p {
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    /* 联系方式 */
-    .contact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: #f8fafc;
-      border-radius: 10px;
-    }
-
-    .contact-icon {
-      width: 36px;
-      height: 36px;
-      background: linear-gradient(135deg, #1565c0, #1e88e5);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .contact-text {
-      flex: 1;
-    }
-
-    .contact-label {
-      font-size: 11px;
-      color: #94a3b8;
-      margin-bottom: 2px;
-    }
-
-    .contact-value {
-      font-size: 14px;
-      color: #0d2b55;
-      font-weight: 600;
+    /* 地址区域 */
+    .address-area {
+      top: 61%;
+      left: 15%;
+      width: 80%;
+      height: 8%;
     }
 
     /* 二维码区域 */
-    .qr-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #f1f5f9;
+    .qr-area {
+      top: 72%;
+      left: 8%;
+      width: 25%;
+      height: 15%;
     }
 
-    .qr-code {
-      width: 80px;
-      height: 80px;
-      background: #fff;
-      border-radius: 8px;
-      padding: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      flex-shrink: 0;
-    }
-
-    .qr-code img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-
-    .qr-text {
-      flex: 1;
-    }
-
-    .qr-text p {
-      font-size: 13px;
-      color: #64748b;
-      line-height: 1.5;
-    }
-
-    .qr-text strong {
-      color: #0d2b55;
-    }
-
-    /* 底部标语 */
-    .footer-section {
-      background: linear-gradient(135deg, #0d2b55 0%, #1565c0 100%);
-      padding: 16px;
-      text-align: center;
-    }
-
-    .footer-text {
-      color: #fff;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .footer-text strong {
-      color: #fbbf24;
-    }
-
-    /* 公司简介 */
-    .company-intro {
-      background: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 100%);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border-left: 4px solid #f59e0b;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .company-intro:active {
-      transform: scale(0.98);
-      background: linear-gradient(135deg, #e8f0fe 0%, #dbeafe 100%);
-    }
-
-    .intro-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .company-intro h4 {
-      font-size: 14px;
-      color: #0d2b55;
-      font-weight: 700;
-    }
-
-    .intro-arrow {
-      font-size: 18px;
-      color: #1565c0;
-      font-weight: 700;
-    }
-
-    .company-intro p {
-      font-size: 12px;
-      color: #64748b;
-      line-height: 1.7;
-      text-align: justify;
-    }
-
-    .more {
-      color: #1565c0;
-      font-weight: 600;
-    }
-
-    /* 服务标签 */
-    .services {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .service-tag {
-      background: #e8f0fe;
-      color: #1565c0;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
+    /* 公司简介区域 */
+    .intro-area {
+      top: 35%;
+      left: 8%;
+      width: 84%;
+      height: 12%;
     }
 
     /* 操作按钮 */
@@ -326,205 +135,469 @@
       font-size: 13px;
       color: #92400e;
       line-height: 1.5;
-    }
-
-    /* 截图提示 */
-    .screenshot-hint {
-      width: 100%;
-      max-width: 375px;
-      margin-top: 12px;
       text-align: center;
-      font-size: 12px;
-      color: #64748b;
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+    /* 弹窗样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .modal-title {
+      margin: 0 0 16px;
+      color: #0d2b55;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .modal-body {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .modal-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .modal-row:last-child {
+      border-bottom: none;
+    }
+
+    .modal-label {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .modal-value {
+      font-weight: 600;
+      color: #0d2b55;
+      font-size: 14px;
+    }
+
+    .modal-close {
+      width: 100%;
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #0d2b55;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 公司简介弹窗 */
+    .company-modal-content {
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .company-section {
+      margin-bottom: 16px;
+    }
+
+    .company-section h4 {
+      font-size: 15px;
+      color: #0d2b55;
+      margin: 16px 0 8px;
+      padding-left: 12px;
+      border-left: 3px solid #f59e0b;
+    }
+
+    .company-section p {
+      color: #334155;
+      line-height: 1.7;
+      font-size: 14px;
+      text-align: justify;
     }
   </style>
 </head>
 <body>
-  <!-- 名片主体 -->
-  <div class="card-container" id="card">
-    <!-- 顶部公司信息 -->
-    <div class="header-section">
-      <div class="company-logo">
-        <img src="1bcee963-6414-484f-b7b2-f1a12b2aecc3.png" alt="侨益股份">
-      </div>
-      <div class="company-name">晓航物流有限公司</div>
-      <div class="company-slogan">侨益物流旗下企业 · 粮食农产品供应链一体化</div>
-    </div>
-
-    <!-- 个人信息卡片 -->
-    <div class="profile-card">
-      <div class="profile-header">
-        <div class="avatar">吕</div>
-        <div class="profile-info">
-          <h2>吕经理</h2>
-          <p>晓航物流有限公司</p>
-        </div>
-      </div>
-
-      <!-- 公司简介 -->
-      <div class="company-intro" onclick="showCompanyDetail()">
-        <div class="intro-header">
-          <h4>公司简介</h4>
-          <span class="intro-arrow">›</span>
-        </div>
-        <p>晓航物流有限公司成立于2021年12月，注册资金1000万元，是侨益物流股份有限公司旗下企业... <span class="more">点击查看更多</span></p>
-      </div>
-
-      <!-- 服务标签 -->
-      <div class="services">
-        <span class="service-tag">🚛 物流运输</span>
-        <span class="service-tag">🏭 货物仓储</span>
-        <span class="service-tag">📦 配送管理</span>
-      </div>
-
-      <!-- 联系方式 -->
-      <div class="contact-list">
-        <div class="contact-item">
-          <div class="contact-icon">📞</div>
-          <div class="contact-text">
-            <div class="contact-label">电话</div>
-            <div class="contact-value">18676046789</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <div class="contact-text">
-            <div class="contact-label">地址</div>
-            <div class="contact-value">南通市崇川区东升旭辉中心A座2103</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 二维码 -->
-      <div class="qr-section">
-        <div class="qr-code">
-          <img src="微信图片_20260320114325_543_347.png" alt="微信二维码">
-        </div>
-        <div class="qr-text">
-          <p><strong>长按识别二维码</strong><br>添加微信咨询合作</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 底部 -->
-    <div class="footer-section">
-      <div class="footer-text">
-        <strong>"诚者，天之道也；诚之者，人之道也。"</strong><br>
-        专业 · 高效 · 共赢
-      </div>
+  <!-- 名片图片容器 -->
+  <div class="card-wrapper">
+    <canvas id="cardCanvas" width="750" height="1200"></canvas>
+    
+    <!-- 可点击区域层 -->
+    <div class="click-layer">
+      <div class="click-area phone-area" onclick="callPhone()" title="点击拨打电话"></div>
+      <div class="click-area address-area" onclick="copyAddress()" title="点击复制地址"></div>
+      <div class="click-area qr-area" onclick="showQR()" title="点击查看二维码"></div>
+      <div class="click-area intro-area" onclick="showCompany()" title="点击查看公司简介"></div>
     </div>
   </div>
 
   <!-- 操作按钮 -->
   <div class="action-buttons">
-    <button class="btn btn-primary" onclick="saveImage()">
-      📷 保存图片
+    <button class="btn btn-primary" onclick="saveCard()">
+      💾 保存名片
     </button>
     <button class="btn btn-secondary" onclick="showContact()">
-      📇 查看联系方式
+      📇 联系方式
     </button>
   </div>
 
   <!-- 提示 -->
   <div class="tips">
-    💡 点击"保存图片"可将名片保存到相册，然后即可发朋友圈分享
-  </div>
-
-  <div class="screenshot-hint">
-    如保存失败，请直接截图后分享
+    💡 点击图片上的电话、地址可直接操作
   </div>
 
   <!-- 联系方式弹窗 -->
-  <div id="contactModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
-    <div style="background: #fff; border-radius: 16px; padding: 24px; max-width: 320px; width: 100%;">
-      <h3 style="margin: 0 0 16px; color: #0d2b55; text-align: center;">联系方式</h3>
-      <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
-          <span style="color: #64748b;">姓名</span>
-          <span style="font-weight: 600; color: #0d2b55;">吕经理</span>
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">联系方式</h3>
+      <div class="modal-body">
+        <div class="modal-row">
+          <span class="modal-label">姓名</span>
+          <span class="modal-value">吕经理</span>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
-          <span style="color: #64748b;">电话</span>
-          <a href="tel:18676046789" style="color: #1565c0; text-decoration: none; font-weight: 600;">18676046789</a>
+        <div class="modal-row">
+          <span class="modal-label">电话</span>
+          <a href="tel:18676046789" class="modal-value" style="color: #1565c0; text-decoration: none;">18676046789</a>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-          <span style="color: #64748b;">地址</span>
-          <span style="text-align: right; max-width: 180px; color: #0d2b55;">南通市崇川区东升旭辉中心A座2103</span>
+        <div class="modal-row">
+          <span class="modal-label">公司</span>
+          <span class="modal-value">晓航物流有限公司</span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">地址</span>
+          <span class="modal-value" style="text-align: right; max-width: 180px;">南通市崇川区东升旭辉中心A座2103</span>
         </div>
       </div>
-      <button onclick="closeModal()" style="width: 100%; background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #0d2b55; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;">关闭</button>
+      <button class="modal-close" onclick="closeModal('contactModal')">关闭</button>
     </div>
   </div>
 
-  <!-- 公司简介详情弹窗 -->
-  <div id="companyDetailModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: flex-end; padding: 0;">
-    <div style="background: #fff; border-radius: 20px 20px 0 0; padding: 24px 20px 32px; width: 100%; max-width: 400px; max-height: 80vh; overflow-y: auto; animation: slideUp 0.3s ease;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #e8f0fe;">
-        <h3 style="margin: 0; color: #0d2b55; font-size: 18px;">公司简介</h3>
-        <button onclick="closeCompanyModal()" style="width: 36px; height: 36px; background: #f1f5f9; border: none; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
+  <!-- 公司简介弹窗 -->
+  <div id="companyModal" class="modal">
+    <div class="modal-content company-modal-content">
+      <h3 class="modal-title">公司简介</h3>
+      <div class="company-section">
+        <p>晓航物流有限公司（简称晓航物流）成立于2021年12月，注册资金1000万元，大股东是侨益物流股份有限公司，是一家从事粮食农产品供应链一体化的专业型第三方物流公司。</p>
       </div>
-      <div style="color: #334155; line-height: 1.8; font-size: 14px;">
-        <p style="margin-bottom: 14px; text-align: justify;">晓航物流有限公司（简称晓航物流）成立于2021年12月，注册资金1000万元，大股东是侨益物流股份有限公司（简称侨益物流），是一家从事粮食农产品供应链一体化的专业型第三方物流公司，有着严谨的运输组织，完善的经营管理理念。</p>
-        
-        <p style="margin-bottom: 14px; text-align: justify;">公司立足于各粮食产销区，为客户提供专业的物流运输、货物仓储、配送管理等服务。公司常设地点位于侨益集团总部，下设产区办事机构，在南通、郑州等地设有常驻办事处。</p>
-        
-        <h4 style="font-size: 15px; color: #0d2b55; margin: 18px 0 10px; padding-left: 12px; border-left: 3px solid #f59e0b;">物流平台专业化</h4>
-        <p style="margin-bottom: 14px; text-align: justify;">晓航物流大股东侨益物流是"新三板"挂牌企业。在过去的19年中，侨益股份专注于为大宗商品提供物流服务，通过提供最具竞争力的、专业化的全链条物流解决方案，得到越来越多客户的认可。</p>
-        
-        <h4 style="font-size: 15px; color: #0d2b55; margin: 18px 0 10px; padding-left: 12px; border-left: 3px solid #f59e0b;">运输组织专业化</h4>
-        <p style="margin-bottom: 14px; text-align: justify;">晓航物流与国内大型物流公司建立起良好的合作模式，同时，在运输前后端遴选出专业高效、价格优越的运输车队，以确保运输过程的高效性、安全性和可溯性。</p>
-        
-        <h4 style="font-size: 15px; color: #0d2b55; margin: 18px 0 10px; padding-left: 12px; border-left: 3px solid #f59e0b;">粮食品控专业化</h4>
-        <p style="margin-bottom: 14px; text-align: justify;">公司成立了专业的粮食出入库质量品控队伍，结合销区储备库、加工厂、饲料厂等各自特点，采取有针对性个性化、专业化的服务模式。</p>
+      <div class="company-section">
+        <h4>物流平台专业化</h4>
+        <p>侨益物流是"新三板"挂牌企业，专注于为大宗商品提供物流服务，提供最具竞争力的、专业化的全链条物流解决方案。</p>
       </div>
-      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e8f0fe; text-align: center; font-size: 13px; color: #1565c0; font-weight: 600;">
-        专业 · 高效 · 共赢
+      <div class="company-section">
+        <h4>运输组织专业化</h4>
+        <p>与国内大型物流公司建立良好合作，遴选出专业高效、价格优越的运输车队，确保运输过程的高效性、安全性和可溯性。</p>
       </div>
+      <div class="company-section">
+        <h4>粮食品控专业化</h4>
+        <p>成立专业的粮食出入库质量品控队伍，采取有针对性个性化、专业化的服务模式。</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('companyModal')" style="margin-top: 10px;">关闭</button>
+    </div>
+  </div>
+
+  <!-- 二维码弹窗 -->
+  <div id="qrModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+      <h3 class="modal-title">添加微信</h3>
+      <img src="微信图片_20260320114325_543_347.png" style="width: 200px; height: 200px; border-radius: 8px; margin: 10px 0;">
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">长按二维码识别添加</p>
+      <button class="modal-close" onclick="closeModal('qrModal')">关闭</button>
     </div>
   </div>
 
   <script>
+    // 绘制名片
+    function drawCard() {
+      const canvas = document.getElementById('cardCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      // 清空画布
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 750, 1200);
+      
+      // 绘制顶部渐变背景
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, '#0d2b55');
+      gradient.addColorStop(1, '#1565c0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 750, 360);
+      
+      // 绘制白色卡片区域
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.roundRect(30, 280, 690, 820, 20);
+      ctx.fill();
+      
+      // 加载并绘制Logo
+      const logo = new Image();
+      logo.crossOrigin = 'anonymous';
+      logo.onload = function() {
+        // Logo背景
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.roundRect(275, 40, 200, 58, 8);
+        ctx.fill();
+        
+        // 绘制Logo
+        ctx.drawImage(logo, 275, 40, 200, 58);
+        
+        // 继续绘制其他内容
+        drawRest(ctx);
+      };
+      logo.src = '1bcee963-6414-484f-b7b2-f1a12b2aecc3.png';
+      
+      // 如果没有Logo，直接绘制其他内容
+      logo.onerror = function() {
+        drawRest(ctx);
+      };
+    }
+    
+    function drawRest(ctx) {
+      // 公司名称
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('晓航物流有限公司', 375, 160);
+      
+      // 公司标语
+      ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fillText('侨益物流旗下企业 · 粮食农产品供应链一体化', 375, 200);
+      
+      // 头像
+      const avatarGradient = ctx.createLinearGradient(60, 320, 140, 400);
+      avatarGradient.addColorStop(0, '#1565c0');
+      avatarGradient.addColorStop(1, '#1e88e5');
+      ctx.fillStyle = avatarGradient;
+      ctx.beginPath();
+      ctx.arc(100, 360, 50, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('吕', 100, 375);
+      
+      // 姓名
+      ctx.fillStyle = '#0d2b55';
+      ctx.font = 'bold 40px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('吕经理', 170, 355);
+      
+      // 职位
+      ctx.fillStyle = '#64748b';
+      ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('晓航物流有限公司', 170, 390);
+      
+      // 分隔线
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(60, 440);
+      ctx.lineTo(690, 440);
+      ctx.stroke();
+      
+      // 公司简介标题
+      ctx.fillStyle = '#0d2b55';
+      ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('公司简介', 60, 490);
+      
+      // 箭头
+      ctx.fillStyle = '#1565c0';
+      ctx.font = '32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('›', 660, 490);
+      
+      // 简介内容
+      ctx.fillStyle = '#64748b';
+      ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('晓航物流有限公司成立于2021年12月，注册资金1000', 60, 525);
+      ctx.fillText('万元，是侨益物流股份有限公司旗下企业...', 60, 555);
+      
+      ctx.fillStyle = '#1565c0';
+      ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('点击查看更多', 520, 555);
+      
+      // 服务标签背景
+      ctx.fillStyle = '#e8f0fe';
+      ctx.beginPath();
+      ctx.roundRect(60, 590, 130, 44, 22);
+      ctx.roundRect(200, 590, 130, 44, 22);
+      ctx.roundRect(340, 590, 150, 44, 22);
+      ctx.fill();
+      
+      ctx.fillStyle = '#1565c0';
+      ctx.font = '20px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('🚛 物流运输', 75, 618);
+      ctx.fillText('🏭 货物仓储', 215, 618);
+      ctx.fillText('📦 配送管理', 355, 618);
+      
+      // 联系方式区域
+      // 电话图标背景
+      const phoneGradient = ctx.createLinearGradient(60, 660, 120, 720);
+      phoneGradient.addColorStop(0, '#1565c0');
+      phoneGradient.addColorStop(1, '#1e88e5');
+      ctx.fillStyle = phoneGradient;
+      ctx.beginPath();
+      ctx.roundRect(60, 660, 72, 72, 16);
+      ctx.fill();
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📞', 96, 705);
+      
+      // 电话标签
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('电话', 150, 685);
+      
+      // 电话号码
+      ctx.fillStyle = '#0d2b55';
+      ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('18676046789', 150, 718);
+      
+      // 地址图标背景
+      ctx.fillStyle = phoneGradient;
+      ctx.beginPath();
+      ctx.roundRect(60, 750, 72, 72, 16);
+      ctx.fill();
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📍', 96, 795);
+      
+      // 地址标签
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('地址', 150, 775);
+      
+      // 地址
+      ctx.fillStyle = '#0d2b55';
+      ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('南通市崇川区东升旭辉中心A座2103', 150, 808);
+      
+      // 分隔线
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.beginPath();
+      ctx.moveTo(60, 850);
+      ctx.lineTo(690, 850);
+      ctx.stroke();
+      
+      // 加载并绘制二维码
+      const qr = new Image();
+      qr.crossOrigin = 'anonymous';
+      qr.onload = function() {
+        ctx.drawImage(qr, 60, 880, 140, 140);
+      };
+      qr.src = '微信图片_20260320114325_543_347.png';
+      
+      // 二维码文字
+      ctx.fillStyle = '#0d2b55';
+      ctx.font = 'bold 26px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('长按识别二维码', 220, 930);
+      
+      ctx.fillStyle = '#64748b';
+      ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('添加微信咨询合作', 220, 965);
+      
+      // 底部渐变
+      const footerGradient = ctx.createLinearGradient(0, 1050, 0, 1200);
+      footerGradient.addColorStop(0, '#0d2b55');
+      footerGradient.addColorStop(1, '#1565c0');
+      ctx.fillStyle = footerGradient;
+      ctx.fillRect(0, 1050, 750, 150);
+      
+      // 底部文字
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('"诚者，天之道也；诚之者，人之道也。"', 375, 1100);
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+      ctx.fillText('专业 · 高效 · 共赢', 375, 1140);
+    }
+    
+    // 页面加载时绘制名片
+    window.onload = function() {
+      drawCard();
+    };
+    
+    // 拨打电话
+    function callPhone() {
+      window.location.href = 'tel:18676046789';
+    }
+    
+    // 复制地址
+    function copyAddress() {
+      const address = '南通市崇川区东升旭辉中心A座2103';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(address).then(() => {
+          alert('地址已复制：' + address);
+        });
+      } else {
+        alert('地址：' + address);
+      }
+    }
+    
+    // 显示二维码
+    function showQR() {
+      document.getElementById('qrModal').style.display = 'flex';
+    }
+    
+    // 显示公司简介
+    function showCompany() {
+      document.getElementById('companyModal').style.display = 'flex';
+    }
+    
     // 显示联系方式
     function showContact() {
       document.getElementById('contactModal').style.display = 'flex';
     }
-
-    // 关闭联系方式弹窗
-    function closeModal() {
-      document.getElementById('contactModal').style.display = 'none';
+    
+    // 关闭弹窗
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
     }
-
-    // 点击遮罩关闭联系方式弹窗
-    document.getElementById('contactModal').onclick = function(e) {
-      if (e.target === this) closeModal();
-    }
-
-    // 显示公司简介详情
-    function showCompanyDetail() {
-      document.getElementById('companyDetailModal').style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    // 关闭公司简介弹窗
-    function closeCompanyModal() {
-      document.getElementById('companyDetailModal').style.display = 'none';
-      document.body.style.overflow = '';
-    }
-
-    // 点击遮罩关闭公司简介弹窗
-    document.getElementById('companyDetailModal').onclick = function(e) {
-      if (e.target === this) closeCompanyModal();
-    }
-
-    // 保存图片功能
-    function saveImage() {
-      // 提示用户截图
-      alert('请使用手机截图功能截取名片图片，然后即可发朋友圈分享\n\n截图方法：\n• iPhone：同时按电源键+音量上键\n• Android：同时按电源键+音量下键');
+    
+    // 点击遮罩关闭弹窗
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.onclick = function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+        }
+      };
+    });
+    
+    // 保存名片图片
+    function saveCard() {
+      const canvas = document.getElementById('cardCanvas');
+      const link = document.createElement('a');
+      link.download = '晓航物流-吕经理-名片.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
     }
   </script>
 </body>
