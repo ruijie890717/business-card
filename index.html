@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>晓航物流 - 吕经理</title>
+  <title>晓航物流 - 吕江涛</title>
+  <meta name="description" content="晓航物流 - 吕江涛的名片，由侨益股份控制的粮食农产品供应链一体化专业型第三方物流公司">
+  <link rel="canonical" href="https://xiaohang-del.github.io/business-card/">
+  <!-- 微信分享配置 -->
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <style>
     * {
       margin: 0;
@@ -124,6 +128,12 @@
       border: 1px solid #e2e8f0;
     }
 
+    /* 分享按钮 - 绿色 */
+    .btn-share {
+      background: linear-gradient(135deg, #07c160, #10b981);
+      color: #fff;
+    }
+
     /* 提示 */
     .tips {
       width: 100%;
@@ -234,6 +244,75 @@
       font-size: 14px;
       text-align: justify;
     }
+
+    /* 分享弹窗样式 */
+    .share-modal-content {
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .share-preview {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .share-preview img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .share-tips {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .share-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .share-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .share-btn-wechat {
+      background: #07c160;
+      color: #fff;
+    }
+
+    .share-btn-save {
+      background: #fff;
+      color: #0d2b55;
+      border: 1px solid #e2e8f0;
+    }
+
+    .share-btn-copy {
+      background: #fff;
+      color: #0d2b55;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* 分享图片预览（隐藏） */
+    #shareCanvas {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -255,14 +334,17 @@
     <button class="btn btn-primary" onclick="saveCard()">
       💾 保存名片
     </button>
+    <button class="btn btn-share" onclick="showShare()">
+      📤 分享名片
+    </button>
     <button class="btn btn-secondary" onclick="showContact()">
-      📇 联系方式
+      📇 联系
     </button>
   </div>
 
   <!-- 提示 -->
   <div class="tips">
-    💡 点击图片上的电话、地址可直接操作
+    💡 点击电话/地址可直接拨打/复制 · 点击二维码添加微信 · 分享名片给好友
   </div>
 
   <!-- 联系方式弹窗 -->
@@ -272,7 +354,7 @@
       <div class="modal-body">
         <div class="modal-row">
           <span class="modal-label">姓名</span>
-          <span class="modal-value">吕经理</span>
+          <span class="modal-value">吕江涛</span>
         </div>
         <div class="modal-row">
           <span class="modal-label">电话</span>
@@ -296,7 +378,7 @@
     <div class="modal-content company-modal-content">
       <h3 class="modal-title">公司简介</h3>
       <div class="company-section">
-        <p>晓航物流有限公司（简称晓航物流）成立于2021年12月，注册资金1000万元，大股东是侨益物流股份有限公司，是一家从事粮食农产品供应链一体化的专业型第三方物流公司。</p>
+        <p>由侨益股份控制，是一家从事粮食农产品供应链一体化的专业型第三方物流公司。</p>
       </div>
       <div class="company-section">
         <h4>物流平台专业化</h4>
@@ -324,7 +406,44 @@
     </div>
   </div>
 
+  <!-- 分享弹窗 -->
+  <div id="shareModal" class="modal">
+    <div class="modal-content share-modal-content">
+      <h3 class="modal-title">分享名片</h3>
+      <div class="share-preview">
+        <img id="sharePreview" src="" alt="分享预览">
+      </div>
+      <p class="share-tips">生成专属分享图片，发送给微信好友</p>
+      <div class="share-buttons">
+        <button class="share-btn share-btn-save" onclick="saveShareImage()">
+          📥 保存图片
+        </button>
+        <button class="share-btn share-btn-wechat" onclick="shareToWechat()">
+          💬 分享到微信
+        </button>
+        <button class="share-btn share-btn-copy" onclick="copyLink()">
+          🔗 复制链接
+        </button>
+      </div>
+      <button class="modal-close" onclick="closeModal('shareModal')" style="margin-top: 16px;">关闭</button>
+    </div>
+  </div>
+
+  <!-- 分享用Canvas（隐藏） -->
+  <canvas id="shareCanvas" width="750" height="1334"></canvas>
+
   <script>
+    // 名片数据
+    const cardData = {
+      name: '吕江涛',
+      phone: '18676046789',
+      company: '晓航物流有限公司',
+      address: '南通市崇川区东升旭辉中心A座2103',
+      intro: '由侨益股份控制，是一家从事粮食农产品供应链一体化的专业型第三方物流公司',
+      logo: '1bcee963-6414-484f-b7b2-f1a12b2aecc3.png',
+      qr: '微信图片_20260320114325_543_347.png'
+    };
+
     // 绘制名片
     function drawCard() {
       const canvas = document.getElementById('cardCanvas');
@@ -347,6 +466,13 @@
       ctx.roundRect(30, 280, 690, 820, 20);
       ctx.fill();
       
+      // 绘制阴影
+      ctx.shadowColor = 'rgba(0,0,0,0.1)';
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetY = 10;
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+      
       // 加载并绘制Logo
       const logo = new Image();
       logo.crossOrigin = 'anonymous';
@@ -363,7 +489,7 @@
         // 继续绘制其他内容
         drawRest(ctx);
       };
-      logo.src = '1bcee963-6414-484f-b7b2-f1a12b2aecc3.png';
+      logo.src = cardData.logo;
       
       // 如果没有Logo，直接绘制其他内容
       logo.onerror = function() {
@@ -376,7 +502,7 @@
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('晓航物流有限公司', 375, 160);
+      ctx.fillText(cardData.company, 375, 160);
       
       // 公司标语
       ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
@@ -395,18 +521,18 @@
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('吕', 100, 375);
+      ctx.fillText(cardData.name.charAt(0), 100, 375);
       
       // 姓名
       ctx.fillStyle = '#0d2b55';
       ctx.font = 'bold 40px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText('吕经理', 170, 355);
+      ctx.fillText(cardData.name, 170, 355);
       
-      // 职位
+      // 职位/公司
       ctx.fillStyle = '#64748b';
       ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillText('晓航物流有限公司', 170, 390);
+      ctx.fillText(cardData.company, 170, 390);
       
       // 分隔线
       ctx.strokeStyle = '#f1f5f9';
@@ -429,8 +555,8 @@
       // 简介内容
       ctx.fillStyle = '#64748b';
       ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillText('晓航物流有限公司成立于2021年12月，注册资金1000', 60, 525);
-      ctx.fillText('万元，是侨益物流股份有限公司旗下企业...', 60, 555);
+      ctx.fillText('由侨益股份控制，是一家从事粮食农产品供应链', 60, 525);
+      ctx.fillText('一体化的专业型第三方物流公司...', 60, 555);
       
       ctx.fillStyle = '#1565c0';
       ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
@@ -474,7 +600,7 @@
       // 电话号码
       ctx.fillStyle = '#0d2b55';
       ctx.font = 'bold 28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillText('18676046789', 150, 718);
+      ctx.fillText(cardData.phone, 150, 718);
       
       // 地址图标背景
       ctx.fillStyle = phoneGradient;
@@ -496,7 +622,7 @@
       // 地址
       ctx.fillStyle = '#0d2b55';
       ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-      ctx.fillText('南通市崇川区东升旭辉中心A座2103', 150, 808);
+      ctx.fillText(cardData.address, 150, 808);
       
       // 分隔线
       ctx.strokeStyle = '#f1f5f9';
@@ -511,7 +637,7 @@
       qr.onload = function() {
         ctx.drawImage(qr, 60, 880, 140, 140);
       };
-      qr.src = '微信图片_20260320114325_543_347.png';
+      qr.src = cardData.qr;
       
       // 二维码文字
       ctx.fillStyle = '#0d2b55';
@@ -539,6 +665,111 @@
       ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.fillText('专业 · 高效 · 共赢', 375, 1140);
     }
+
+    // 绘制分享图片（带水印，适合朋友圈传播）
+    function drawShareCard() {
+      return new Promise((resolve) => {
+        const canvas = document.getElementById('shareCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 清空画布
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 750, 1334);
+        
+        // 顶部渐变背景
+        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+        gradient.addColorStop(0, '#0d2b55');
+        gradient.addColorStop(1, '#1565c0');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 750, 500);
+        
+        // 公司名称
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(cardData.company, 375, 100);
+        
+        // 姓名
+        ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.fillText(cardData.name, 375, 200);
+        
+        // 职位
+        ctx.font = '32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
+        ctx.fillText('晓航物流有限公司', 375, 260);
+        
+        // 装饰线
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(250, 310);
+        ctx.lineTo(500, 310);
+        ctx.stroke();
+        
+        // 联系方式卡片
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0,0,0,0.1)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetY = 5;
+        ctx.beginPath();
+        ctx.roundRect(40, 340, 670, 280, 20);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        
+        // 电话
+        ctx.fillStyle = '#0d2b55';
+        ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('📞 ' + cardData.phone, 80, 420);
+        
+        // 地址
+        ctx.font = '28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.fillText('📍 ' + cardData.address, 80, 500);
+        
+        // 分隔线
+        ctx.strokeStyle = '#f1f5f9';
+        ctx.beginPath();
+        ctx.moveTo(80, 540);
+        ctx.lineTo(670, 540);
+        ctx.stroke();
+        
+        // 公司简介
+        ctx.fillStyle = '#64748b';
+        ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.fillText(cardData.intro, 80, 590);
+        
+        // 二维码区域
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0,0,0,0.1)';
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetY = 5;
+        ctx.beginPath();
+        ctx.roundRect(40, 660, 670, 500, 20);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        
+        // 二维码标题
+        ctx.fillStyle = '#0d2b55';
+        ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('扫码添加微信', 375, 740);
+        
+        // 加载并绘制二维码
+        const qr = new Image();
+        qr.crossOrigin = 'anonymous';
+        qr.onload = function() {
+          ctx.drawImage(qr, 200, 780, 350, 350);
+          
+          // 保存图片
+          resolve(canvas.toDataURL('image/png'));
+        };
+        qr.onerror = function() {
+          // 二维码加载失败也返回
+          resolve(canvas.toDataURL('image/png'));
+        };
+        qr.src = cardData.qr;
+      });
+    }
     
     // 页面加载时绘制名片
     window.onload = function() {
@@ -547,21 +778,20 @@
     
     // 拨打电话
     function callPhone() {
-      window.location.href = 'tel:18676046789';
+      window.location.href = 'tel:' + cardData.phone;
     }
     
     // 复制地址
     function copyAddress() {
-      const address = '南通市崇川区东升旭辉中心A座2103';
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(address).then(() => {
-          alert('地址已复制：' + address);
+        navigator.clipboard.writeText(cardData.address).then(() => {
+          showToast('地址已复制');
         });
       } else {
-        alert('地址：' + address);
+        showToast('地址：' + cardData.address);
       }
     }
-    
+
     // 显示二维码
     function showQR() {
       document.getElementById('qrModal').style.display = 'flex';
@@ -595,9 +825,81 @@
     function saveCard() {
       const canvas = document.getElementById('cardCanvas');
       const link = document.createElement('a');
-      link.download = '晓航物流-吕经理-名片.png';
+      link.download = cardData.company + '-' + cardData.name + '-名片.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
+      showToast('名片已保存');
+    }
+
+    // 显示分享弹窗
+    async function showShare() {
+      const modal = document.getElementById('shareModal');
+      const preview = document.getElementById('sharePreview');
+      
+      // 显示加载中
+      preview.src = '';
+      modal.style.display = 'flex';
+      
+      // 生成分享图片
+      const shareImage = await drawShareCard();
+      preview.src = shareImage;
+    }
+
+    // 保存分享图片
+    function saveShareImage() {
+      const preview = document.getElementById('sharePreview');
+      const link = document.createElement('a');
+      link.download = cardData.company + '-' + cardData.name + '-分享.png';
+      link.href = preview.src;
+      link.click();
+      showToast('分享图片已保存');
+    }
+
+    // 分享到微信（提示用户长按保存图片发送）
+    function shareToWechat() {
+      showToast('请点击下方「保存图片」，然后在微信中选择发送');
+    }
+
+    // 复制链接
+    function copyLink() {
+      const url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('链接已复制，可发送给好友');
+        });
+      } else {
+        showToast('链接：' + url);
+      }
+    }
+
+    // Toast提示
+    function showToast(message) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.8);
+        color: #fff;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        z-index: 2000;
+        animation: fadeIn 0.3s;
+      `;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
     }
   </script>
 </body>
