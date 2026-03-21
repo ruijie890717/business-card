@@ -4,10 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>晓航物流 - 吕江涛</title>
-  <meta name="description" content="晓航物流 - 吕江涛的名片，由侨益股份控制的粮食农产品供应链一体化专业型第三方物流公司">
-  <link rel="canonical" href="https://xiaohang-del.github.io/business-card/">
-  <!-- 微信分享配置 -->
-  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <style>
     * {
       margin: 0;
@@ -128,12 +124,6 @@
       border: 1px solid #e2e8f0;
     }
 
-    /* 分享按钮 - 绿色 */
-    .btn-share {
-      background: linear-gradient(135deg, #07c160, #10b981);
-      color: #fff;
-    }
-
     /* 提示 */
     .tips {
       width: 100%;
@@ -245,73 +235,77 @@
       text-align: justify;
     }
 
-    /* 分享弹窗样式 */
-    .share-modal-content {
-      max-width: 360px;
-      text-align: center;
-    }
-
-    .share-preview {
-      background: #f8fafc;
+    /* Toast提示 */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 16px 32px;
       border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 20px;
+      font-size: 16px;
+      z-index: 2000;
     }
 
-    .share-preview img {
+    /* 企业宣传图片画廊 */
+    .company-gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .company-gallery img {
       width: 100%;
-      max-width: 280px;
+      aspect-ratio: 16/10;
+      object-fit: cover;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .share-tips {
-      font-size: 13px;
-      color: #64748b;
-      margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .share-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .share-btn {
-      width: 100%;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
       cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .company-gallery img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* 图片预览弹窗 */
+    .image-preview-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .image-preview-modal img {
+      max-width: 95%;
+      max-height: 85%;
+      border-radius: 8px;
+    }
+
+    .image-preview-modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-    }
-
-    .share-btn-wechat {
-      background: #07c160;
-      color: #fff;
-    }
-
-    .share-btn-save {
-      background: #fff;
-      color: #0d2b55;
-      border: 1px solid #e2e8f0;
-    }
-
-    .share-btn-copy {
-      background: #fff;
-      color: #0d2b55;
-      border: 1px solid #e2e8f0;
-    }
-
-    /* 分享图片预览（隐藏） */
-    #shareCanvas {
-      display: none;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -334,17 +328,14 @@
     <button class="btn btn-primary" onclick="saveCard()">
       💾 保存名片
     </button>
-    <button class="btn btn-share" onclick="showShare()">
-      📤 分享名片
-    </button>
     <button class="btn btn-secondary" onclick="showContact()">
-      📇 联系
+      📇 联系方式
     </button>
   </div>
 
   <!-- 提示 -->
   <div class="tips">
-    💡 点击电话/地址可直接拨打/复制 · 点击二维码添加微信 · 分享名片给好友
+    💡 点击电话可直接拨打 · 点击地址可复制 · 点击二维码添加微信
   </div>
 
   <!-- 联系方式弹窗 -->
@@ -381,6 +372,17 @@
         <p>由侨益股份控制，是一家从事粮食农产品供应链一体化的专业型第三方物流公司。</p>
       </div>
       <div class="company-section">
+        <h4>企业宣传</h4>
+        <div class="company-gallery">
+          <img src="微信图片_20260321101406_560_347.png" onclick="previewImage(this.src)" alt="企业宣传1">
+          <img src="微信图片_20260321101406_561_347.png" onclick="previewImage(this.src)" alt="企业宣传2">
+          <img src="微信图片_20260321101406_562_347.png" onclick="previewImage(this.src)" alt="企业宣传3">
+          <img src="微信图片_20260321101406_563_347.png" onclick="previewImage(this.src)" alt="企业宣传4">
+          <img src="微信图片_20260321101406_564_347.png" onclick="previewImage(this.src)" alt="企业宣传5">
+          <img src="微信图片_20260321101406_565_347.png" onclick="previewImage(this.src)" alt="企业宣传6">
+        </div>
+      </div>
+      <div class="company-section">
         <h4>物流平台专业化</h4>
         <p>侨益物流是"新三板"挂牌企业，专注于为大宗商品提供物流服务，提供最具竞争力的、专业化的全链条物流解决方案。</p>
       </div>
@@ -396,6 +398,12 @@
     </div>
   </div>
 
+  <!-- 图片预览弹窗 -->
+  <div id="imagePreviewModal" class="image-preview-modal">
+    <span class="close-btn" onclick="closeImagePreview()">×</span>
+    <img id="previewImage" src="" alt="图片预览">
+  </div>
+
   <!-- 二维码弹窗 -->
   <div id="qrModal" class="modal">
     <div class="modal-content" style="text-align: center;">
@@ -406,32 +414,6 @@
     </div>
   </div>
 
-  <!-- 分享弹窗 -->
-  <div id="shareModal" class="modal">
-    <div class="modal-content share-modal-content">
-      <h3 class="modal-title">分享名片</h3>
-      <div class="share-preview">
-        <img id="sharePreview" src="" alt="分享预览">
-      </div>
-      <p class="share-tips">生成专属分享图片，发送给微信好友</p>
-      <div class="share-buttons">
-        <button class="share-btn share-btn-save" onclick="saveShareImage()">
-          📥 保存图片
-        </button>
-        <button class="share-btn share-btn-wechat" onclick="shareToWechat()">
-          💬 分享到微信
-        </button>
-        <button class="share-btn share-btn-copy" onclick="copyLink()">
-          🔗 复制链接
-        </button>
-      </div>
-      <button class="modal-close" onclick="closeModal('shareModal')" style="margin-top: 16px;">关闭</button>
-    </div>
-  </div>
-
-  <!-- 分享用Canvas（隐藏） -->
-  <canvas id="shareCanvas" width="750" height="1334"></canvas>
-
   <script>
     // 名片数据
     const cardData = {
@@ -439,7 +421,6 @@
       phone: '18676046789',
       company: '晓航物流有限公司',
       address: '南通市崇川区东升旭辉中心A座2103',
-      intro: '由侨益股份控制，是一家从事粮食农产品供应链一体化的专业型第三方物流公司',
       logo: '1bcee963-6414-484f-b7b2-f1a12b2aecc3.png',
       qr: '微信图片_20260320114325_543_347.png'
     };
@@ -477,24 +458,17 @@
       const logo = new Image();
       logo.crossOrigin = 'anonymous';
       logo.onload = function() {
-        // Logo背景
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
         ctx.roundRect(275, 40, 200, 58, 8);
         ctx.fill();
-        
-        // 绘制Logo
         ctx.drawImage(logo, 275, 40, 200, 58);
-        
-        // 继续绘制其他内容
         drawRest(ctx);
       };
-      logo.src = cardData.logo;
-      
-      // 如果没有Logo，直接绘制其他内容
       logo.onerror = function() {
         drawRest(ctx);
       };
+      logo.src = cardData.logo;
     }
     
     function drawRest(ctx) {
@@ -576,7 +550,6 @@
       ctx.fillText('🏭 货物仓储', 215, 618);
       ctx.fillText('📦 配送管理', 355, 618);
       
-      // 联系方式区域
       // 电话图标背景
       const phoneGradient = ctx.createLinearGradient(60, 660, 120, 720);
       phoneGradient.addColorStop(0, '#1565c0');
@@ -665,111 +638,6 @@
       ctx.font = '22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
       ctx.fillText('专业 · 高效 · 共赢', 375, 1140);
     }
-
-    // 绘制分享图片（带水印，适合朋友圈传播）
-    function drawShareCard() {
-      return new Promise((resolve) => {
-        const canvas = document.getElementById('shareCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        // 清空画布
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, 750, 1334);
-        
-        // 顶部渐变背景
-        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-        gradient.addColorStop(0, '#0d2b55');
-        gradient.addColorStop(1, '#1565c0');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 750, 500);
-        
-        // 公司名称
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 52px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(cardData.company, 375, 100);
-        
-        // 姓名
-        ctx.font = 'bold 64px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.fillText(cardData.name, 375, 200);
-        
-        // 职位
-        ctx.font = '32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.9)';
-        ctx.fillText('晓航物流有限公司', 375, 260);
-        
-        // 装饰线
-        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(250, 310);
-        ctx.lineTo(500, 310);
-        ctx.stroke();
-        
-        // 联系方式卡片
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = 'rgba(0,0,0,0.1)';
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetY = 5;
-        ctx.beginPath();
-        ctx.roundRect(40, 340, 670, 280, 20);
-        ctx.fill();
-        ctx.shadowColor = 'transparent';
-        
-        // 电话
-        ctx.fillStyle = '#0d2b55';
-        ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('📞 ' + cardData.phone, 80, 420);
-        
-        // 地址
-        ctx.font = '28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.fillText('📍 ' + cardData.address, 80, 500);
-        
-        // 分隔线
-        ctx.strokeStyle = '#f1f5f9';
-        ctx.beginPath();
-        ctx.moveTo(80, 540);
-        ctx.lineTo(670, 540);
-        ctx.stroke();
-        
-        // 公司简介
-        ctx.fillStyle = '#64748b';
-        ctx.font = '24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.fillText(cardData.intro, 80, 590);
-        
-        // 二维码区域
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = 'rgba(0,0,0,0.1)';
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetY = 5;
-        ctx.beginPath();
-        ctx.roundRect(40, 660, 670, 500, 20);
-        ctx.fill();
-        ctx.shadowColor = 'transparent';
-        
-        // 二维码标题
-        ctx.fillStyle = '#0d2b55';
-        ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('扫码添加微信', 375, 740);
-        
-        // 加载并绘制二维码
-        const qr = new Image();
-        qr.crossOrigin = 'anonymous';
-        qr.onload = function() {
-          ctx.drawImage(qr, 200, 780, 350, 350);
-          
-          // 保存图片
-          resolve(canvas.toDataURL('image/png'));
-        };
-        qr.onerror = function() {
-          // 二维码加载失败也返回
-          resolve(canvas.toDataURL('image/png'));
-        };
-        qr.src = cardData.qr;
-      });
-    }
     
     // 页面加载时绘制名片
     window.onload = function() {
@@ -831,47 +699,6 @@
       showToast('名片已保存');
     }
 
-    // 显示分享弹窗
-    async function showShare() {
-      const modal = document.getElementById('shareModal');
-      const preview = document.getElementById('sharePreview');
-      
-      // 显示加载中
-      preview.src = '';
-      modal.style.display = 'flex';
-      
-      // 生成分享图片
-      const shareImage = await drawShareCard();
-      preview.src = shareImage;
-    }
-
-    // 保存分享图片
-    function saveShareImage() {
-      const preview = document.getElementById('sharePreview');
-      const link = document.createElement('a');
-      link.download = cardData.company + '-' + cardData.name + '-分享.png';
-      link.href = preview.src;
-      link.click();
-      showToast('分享图片已保存');
-    }
-
-    // 分享到微信（提示用户长按保存图片发送）
-    function shareToWechat() {
-      showToast('请点击下方「保存图片」，然后在微信中选择发送');
-    }
-
-    // 复制链接
-    function copyLink() {
-      const url = window.location.href;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => {
-          showToast('链接已复制，可发送给好友');
-        });
-      } else {
-        showToast('链接：' + url);
-      }
-    }
-
     // Toast提示
     function showToast(message) {
       const existing = document.querySelector('.toast');
@@ -879,19 +706,6 @@
       
       const toast = document.createElement('div');
       toast.className = 'toast';
-      toast.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0,0,0,0.8);
-        color: #fff;
-        padding: 16px 32px;
-        border-radius: 12px;
-        font-size: 16px;
-        z-index: 2000;
-        animation: fadeIn 0.3s;
-      `;
       toast.textContent = message;
       document.body.appendChild(toast);
       
@@ -901,6 +715,24 @@
         setTimeout(() => toast.remove(), 300);
       }, 2000);
     }
+
+    // 图片预览
+    function previewImage(src) {
+      document.getElementById('previewImage').src = src;
+      document.getElementById('imagePreviewModal').style.display = 'flex';
+    }
+
+    // 关闭图片预览
+    function closeImagePreview() {
+      document.getElementById('imagePreviewModal').style.display = 'none';
+    }
+
+    // 点击遮罩关闭图片预览
+    document.getElementById('imagePreviewModal').onclick = function(e) {
+      if (e.target === this) {
+        closeImagePreview();
+      }
+    };
   </script>
 </body>
 </html>
